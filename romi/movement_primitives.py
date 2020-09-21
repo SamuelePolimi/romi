@@ -100,6 +100,8 @@ class MovementPrimitive:
     def get_timing(frequency, duration):
         ctr_time = 1. / frequency
         n_points = int(duration * frequency)
+        if n_points <= 0:
+            n_points = 1
         z = np.linspace(0., 1., n_points)
         return ctr_time, z, n_points
 
