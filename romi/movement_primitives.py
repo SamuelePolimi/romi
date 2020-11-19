@@ -48,6 +48,14 @@ class MovementSpace:
         return np.concatenate([self.get_trajectory_displacement(z, i)
                                for i in range(self.n_dim)], axis=0)
 
+class Movement:
+    
+    def get_full_trajectory(self, frequency, duration):
+        pass
+    
+    def get_init_trajectory(self, duration):
+        pass
+    
 
 class ProjectedMovementSpace(MovementSpace):
 
@@ -78,7 +86,7 @@ class ProjectedMovementSpace(MovementSpace):
         return self.displacement[self.n_features * dim: self.n_features * (dim + 1)]
 
 
-class MovementPrimitive:
+class MovementPrimitive(Movement):
 
     def __init__(self, movement_space, parameters):
         """
@@ -234,7 +242,7 @@ def LearnTrajectory(movement_space, trajectory):
         mp = MovementPrimitive(movement_space, w)
         traj = mp.get_full_trajectory_from_z(t)
         loss = np.mean([np.mean(np.square(y_1 - y_2)) for y_1, y_2 in zip(traj.values.T, trajectory.values.T)])
-        print("Learn movement %f [s], loss=%s" % (time.time() - start, loss))
+        # print("Learn movement %f [s], loss=%s" % (time.time() - start, loss))
     else:
         start = time.time()
         Phi = movement_space.get_block_phi(t)
@@ -243,7 +251,7 @@ def LearnTrajectory(movement_space, trajectory):
         y = np.concatenate([values[ref] for ref in movement_space.group.refs], axis=0)
         params = np.linalg.solve(A, np.matmul(Phi.T, (y - movement_space.get_block_trajectory_displacement(t))))
         mp = PrincipalMovementPrimitive(movement_space, params)
-        print("Learn principal components %f" % (time.time() - start))
+        # print("Learn principal components %f" % (time.time() - start))
     return mp
 
 
