@@ -201,7 +201,7 @@ class PrincipalMovementPrimitive(MovementPrimitive):
 
 
 def ClassicSpace(group, n_features=10, regularization=1E-12):
-    h = 0.5 * (1. + 1 / n_features) / n_features  # TODO: why?
+    h = (1. + 1 / n_features) / n_features #0.5 * (1. + 1 / n_features) / n_features  # TODO: why?
     h = h ** 2
     bandwidths = np.repeat([h], n_features, axis=0)
     centers = np.linspace(0 - 0.5 / n_features, 1 + 0.5 / n_features, n_features)
